@@ -1,0 +1,46 @@
+{
+  "name": "FIDIS Default Token List to Swap",
+  "timestamp": "2022-06-16T11:36:00Z",
+  "tokens": [
+    {
+      "name": "FIDIS FI25 Crypto Index",
+      "symbol": "FI25",
+      "address": "0x2735e0080638f8a5373393F3d083eD2777651931",
+      "chainId": 10,
+      "decimals": 8,
+      "logoURI": ""
+    },
+    {
+      "name": "GoldFI Token",
+      "symbol": "GoldFI",
+      "address": "",
+      "chainId": 10,
+      "decimals": 8,
+      "logoURI": ""
+    },
+    {
+      "name": "MetaFI Token",
+      "symbol": "MetaFI",
+      "address": "",
+      "chainId": 10,
+      "decimals": 8,
+      "logoURI": ""
+    },
+    {
+      "name": "NFTFI Token",
+      "symbol": "NFTFI",
+      "address": "",
+      "chainId": 10,
+      "decimals": 8,
+      "logoURI": ""
+    },
+    {
+      "name": "DeFiFI Token",
+      "symbol": "DeFiFI",
+      "address": "",
+      "chainId": 10,
+      "decimals": 8,
+      "logoURI": ""
+    }    
+  ]
+}

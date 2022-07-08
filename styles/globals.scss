@@ -1,0 +1,279 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --orange-FIDIS: #f09d01;
+  --normal-wite-text: #dadada;
+}
+/*  ======================
+
+    table of contents
+
+    1- Global styles
+
+    2- Typography 
+
+    3- Layout 
+
+    4- Components
+      4.1 navbar
+      4.2 popup
+      4.3 scrollbar
+      4.4 notification
+      4.5 charts
+      4.6 account
+      4.7 checkbox
+      4.8 icons
+      4.9 date input
+
+    ========================*/
+
+/*  ======================
+    1- Global styles
+    ========================*/
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  cursor: default;
+  font-family: 'Montserrat';
+  font-weight: 400;
+  transition: all 0.2s ease-in-out;
+  // color: var(--normal-wite-text);
+}
+
+html {
+  /* background-image: url(../assets/images/website_background.png); */
+  background-color: #281f5b;
+  background-size: cover;
+  background-position-x: left;
+  background-repeat: no-repeat;
+}
+
+button,
+button *,
+a,
+a *,
+input[checkbox],
+input[radio],
+select {
+  cursor: pointer;
+  // color: white;
+}
+
+select,
+input {
+  outline: none;
+  background: none;
+}
+input {
+  cursor: text;
+}
+
+button:hover,
+button[disabled],
+a:hover {
+  transform: scale(1.02);
+}
+
+input[disabled]:hover {
+  opacity: 1;
+  transform: scale(1);
+  cursor: not-allowed;
+}
+
+button.hoverEffectContained:hover {
+  background-color: var(--orange-FIDIS);
+  color: white;
+}
+
+button.disconectButton{
+  background-color: Transparent;
+  border: none;
+  color:#f09d01; 
+}
+
+/*  ======================
+    2- Typography 
+    ========================*/
+
+@media (min-width: 2500px) {
+  div,
+  button,
+  a {
+    font-size: 1.4rem !important;
+  }
+  span,
+  input,
+  select {
+    font-size: 18px !important;
+  }
+  h1 {
+    font-size: 28px !important;
+  }
+  //{transform: scale(1.2);}
+}
+
+/*  ======================
+    3- Layout 
+    ========================*/
+
+/*  ======================
+    4- Component
+    ========================*/
+
+//* navbar */
+
+#Navbar {
+  a:hover {
+    transform: scale(1);
+  }
+  a {
+    padding-left: 0.5rem;
+  }
+}
+
+//* popup */
+
+.popup select {
+  outline: none;
+}
+.popup select > option {
+  background: #000;
+  color: var(--orange-FIDIS);
+  padding: 2px;
+}
+.popup select > option:hover {
+  background: var(--orange-FIDIS);
+  color: white;
+}
+
+//* scrollbar */
+
+.scrolltype::-webkit-scrollbar {
+  background: rgba(0, 0, 0, 0.27);
+  width: 4px;
+  height: 4px;
+}
+
+.scrolltype::-webkit-scrollbar-thumb {
+  background: var(--orange-FIDIS);
+  /* outline: 1px solid slategrey; */
+  width: 8px;
+}
+
+.tokens_scrolltype::-webkit-scrollbar {
+  background: rgba(0, 0, 0, 0);
+  width: 4px;
+  height: 4px;
+}
+.tokens_scrolltype:hover::-webkit-scrollbar {
+  background: rgba(0, 0, 0, 0.27);
+}
+
+.tokens_scrolltype::-webkit-scrollbar-thumb {
+  background: rgba(0, 0, 0, 0);
+  /* outline: 1px solid slategrey; */
+  width: 8px;
+}
+.tokens_scrolltype:hover::-webkit-scrollbar-thumb {
+  background: var(--orange-FIDIS);
+  /* outline: 1px solid slategrey; */
+  width: 8px;
+}
+
+//* notification */
+
+.notification {
+  z-index: 50;  
+  opacity: 1;
+  position: absolute;
+  top: 1rem;
+  left: 50%;
+  transform: translateX(-50%);
+  display: grid;
+  place-content: center;
+  border-radius: 10px;
+  background-color: black;
+  padding: 2rem;
+  box-shadow: 0 0 1rem rgba(0, 0, 0, 0.5);
+  animation: notifAnimation 5s ease-in-out forwards;
+
+  @keyframes notifAnimation {
+    70% {
+      opacity: 0.9;
+    }
+    100% {
+      opacity: 0;
+    }
+  }
+}
+
+//* charts */
+
+.react-stockchart {
+  background-color: rgb(189, 189, 189);
+}
+.chart-wrapper canvas {
+  background-color: rgb(0 0 0 / 0.3);
+  // padding: 20px;
+}
+.chart-wrapper svg>rect{
+  fill: transparent;
+}
+.chart-wrapper svg>g>rect:first-child{
+  fill: transparent;
+}
+svg text  {
+  fill: green;
+  font: 15px sans-serif;
+  text-anchor: center;
+}
+svg text.label {
+  fill: black;
+  font: 15px sans-serif;
+  text-anchor: center;
+}
+//* account */
+
+.account_settings select:hover,
+.account_settings input:hover {
+  opacity: 0.8;
+  transform: scale(1.05);
+}
+
+//* checkbox */
+
+.toggle_bg:after {
+  content: '';
+  @apply absolute top-1 left-1 h-3 w-3 rounded-full border border-gray-300 bg-white shadow-sm transition;
+}
+input:checked + .toggle_bg:after {
+  transform: translateX(100%);
+  @apply border-white;
+}
+input:checked + .toggle_bg {
+  @apply border-blue-600 bg-blue-600;
+}
+
+//* icons */
+
+/* this is for the icon 'Chart-pie' that is next to the word 'Overview' or 'Dashboard' in the general Navbar */
+button.hoverEffectOutlined:hover {
+  color: var(--orange-FIDIS);
+  border: 2px solid var(--orange-FIDIS);
+  background: none;
+}
+
+a:hover svg path {
+  fill: var(--orange-FIDIS);
+}
+
+//* date input */
+
+::-webkit-calendar-picker-indicator {
+  filter: invert(1);
+  margin-left: -0.25rem;
+}
