@@ -52,7 +52,13 @@ const initialBusinessAccount: BusinessAccount = {
 }
 
 const User = ({ profilePicture, setProfilePicture }: any) => {
- 
+  /* 
+  variables:
+    - user: the user object, contains all info about the current user
+    - setUserData: to set/update user data in Moralis database
+    - isUserUpdating: used to show loading state when the user clicks 'Save Info'
+    - userError: used to show error message when the user clicks 'Save Info'
+  */
   const {
     user,
     account,
@@ -79,11 +85,21 @@ const User = ({ profilePicture, setProfilePicture }: any) => {
     () => account && isAuthenticated,
     [account, isAuthenticated]
   )
+
   // show notification when the user clicks 'Save Info'
   const [
     showNotificationAfterUpdatingUserInfo,
     setShowNotificationAfterUpdatingUserInfo,
   ] = useState(false)
+
+  /// this should execute only once, that's why it's separated, and not every time the user data changes
+  // useEffect(() => {
+  //   const fetch = async () => {
+  //     const moralisData = await user.fetch()
+  //   }
+
+  //   if (user) fetch()
+  // }, [])
 
   useEffect(() => {
     user && setAccountType(user.attributes.accountType || AccountType.Personal)
@@ -291,7 +307,11 @@ const User = ({ profilePicture, setProfilePicture }: any) => {
       addressCountryCode: '',
       emailAddress: '',
     }
-   
+    /* 
+      1- verify all inputs !== ''
+      2- send all info to Moralis database
+      */
+
     let isValid = true
     // if accountType is AccountType.Business then send the company info
     if (accountType === AccountType.Business) {

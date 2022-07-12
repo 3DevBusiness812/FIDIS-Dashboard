@@ -109,6 +109,17 @@ const Distribution = () => {
     .outerRadius(Math.min(chartWidth / 2, chartHeight / 2))
   const arcs = pie(pData)
 
+  // const padAngle = 1
+  // const arcs = d3
+  //   .pie<number>()
+  //   .padAngle(padAngle)
+  //   .sort(null)
+  //   .value((i: any) => V[i])(I)
+  // const arc = d3
+  //   .arc<d3.PieArcDatum<number>>()
+  //   .innerRadius(0)
+  //   .outerRadius(Math.min(chartWidth / 2, chartHeight / 2))
+
   useEffect(() => {
     const svg = d3.select(svgRef.current)
     svg

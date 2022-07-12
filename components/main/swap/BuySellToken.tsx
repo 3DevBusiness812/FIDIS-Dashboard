@@ -39,6 +39,10 @@ const initialTransactionData: TransactionData = {
   txHash: '',
 }
 
+// const url = `mongodb://${process.env.NEXT_PUBLIC_MONGO_HOST}:${process.env.NEXT_PUBLIC_MONGO_PORT}`
+// // Create a new MongoClient
+// const client = new MongoClient(url)
+
 declare let window: any
 
 const Popup = ({ setPopupOpen, popupOpen, userID }) => {
@@ -57,8 +61,38 @@ const Popup = ({ setPopupOpen, popupOpen, userID }) => {
     useState<boolean>(false)
 
   const { account } = useMoralis()
-  const storeTX = (tx: TransactionData) => {
 
+  // const writeTXtoMongo = async (tx: TransactionData) => {
+  //   try {
+  //     // Connect the client to the server
+  //     await client.connect()
+  //     // Establish and verify connection
+  //     const db = client.db(process.env.NEXT_PUBLIC_MONGO_DB)
+  //     console.log('Connected successfully to server')
+  //     const stuff = db.collection(process.env.NEXT_PUBLIC_MONGO_COLLECTION)
+  //     const record = {
+  //       UserID: tx.userID,
+  //       UserWallet: tx.userWallet,
+  //       BuySell: tx.buySell,
+  //       CurrencyTypeSent: tx.currencySent,
+  //       AmountSent: tx.amountSent,
+  //       CurrencyTypeToBeReceived: tx.currencyToBeReceived,
+  //       AmountToBeReceived: tx.amountToBeReceived,
+  //       CryptoIndexNAV: tx.indexNAV,
+  //       SwapRate: tx.swapRate,
+  //     }
+  //     const result = await stuff.insertOne(record)
+  //   } finally {
+  //     // Ensures that the client will close when you finish/error
+  //     await client.close()
+  //   }
+  // }
+
+  const storeTX = (tx: TransactionData) => {
+    // writeTXtoMongo(tx).catch(console.dir)
+    // return
+    // console.log('tx', tx)
+    // using Moralis (to change)
     const fidis_db1 = Moralis.Object.extend(process.env.NEXT_PUBLIC_MONGO_DB)
     const db1 = new fidis_db1()
     db1
@@ -115,6 +149,89 @@ const Popup = ({ setPopupOpen, popupOpen, userID }) => {
   const handleAmountChange = (evt: ChangeEvent<HTMLInputElement>) => {
     setTokenAmountInput(evt.target.value)
   }
+
+  // // transfer assets using Moralis API
+  // const transferAssetsMoralis = async (buySell: string) => {
+  //   let transOptions
+  //   let tokenSent: string
+  //   let amountSent: string
+  //   let token2beReceived: string
+  //   let amount2beReceived: string
+
+  //   if (buySell === 'Buy') {
+  //     // transfer native assets (eth)
+  //     tokenSent = 'native'
+  //     amountSent = ethAmount.toFixed(5)
+  //     token2beReceived = token
+  //     amount2beReceived = tokenAmountInput
+  //     transOptions = {
+  //       type: 'native',
+  //       amount: Moralis.Units.ETH(amountSent),
+  //       receiver: process.env.NEXT_PUBLIC_FIDIS_WALLET_ADDRESS,
+  //       // awaitReceipt: false
+  //     }
+  //   } else {
+  //     // transfer tokens (FI25)
+  //     tokenSent = token
+  //     amountSent = tokenAmountInput
+  //     token2beReceived = 'native'
+  //     amount2beReceived = ethAmount.toFixed(5)
+  //     transOptions = {
+  //       type: 'erc20',
+  //       amount: Moralis.Units.Token(amountSent, tokenData.decimals),
+  //       receiver: process.env.NEXT_PUBLIC_FIDIS_WALLET_ADDRESS,
+  //       contractAddress: tokenData.address,
+  //       // awaitReceipt: false
+  //     }
+  //   }
+  //   console.log('transferOptions', transOptions)
+
+  //   setTransactionError('')
+  //   setTransactionConfirmed(false)
+
+  //   const transactionHash: string = ''
+
+  //   // write tx to Moralis database
+  //   const tx: TransactionData = {
+  //     userID: userID,
+  //     userWallet: account,
+  //     buySell: buySell,
+  //     currencySent: tokenSent,
+  //     amountSent: amountSent,
+  //     currencyToBeReceived: token2beReceived,
+  //     amountToBeReceived: amount2beReceived,
+  //     indexNAV: Number(indexData.price).toFixed(3),
+  //     swapRate: Number(indexData.swapRate).toFixed(3),
+  //     txHash: transactionHash,
+  //   }
+  //   storeTX(tx)
+
+  //   const transaction = await Moralis.transfer(transOptions)
+  //   //// Typescript problem
+  //   // transaction.on("transactionHash", (hash) => {
+
+  //   // })
+  //   // .on ("receipt", (receipt) => {
+
+  //   // })
+  //   // .on ("confirmation", (confirnationNumber, receipt) => {
+
+  //   // })
+  //   // .on ("error", (error) => {
+
+  //   // })
+
+  //   // .wait() - not recognized in Typescript
+  //   // await transaction
+  //   //   .wait(1)
+  //   //   .then((receipt) => {
+  //   //     setTransactionConfirmed(true)
+  //   //   })
+  //   //   .catch((error) => {
+  //   //     setTransactionError(error.message)
+  //   //   })
+  // }
+
   // transfer assets using ethers.js
   // under coding
   const transferAssets = async (buySell: string) => {
@@ -142,11 +259,18 @@ const Popup = ({ setPopupOpen, popupOpen, userID }) => {
       token2beReceived = token
       amount2beReceived = tokenAmountInput
 
+      // const nonce = await signer.getTransactionCount()
+      // const gas_price = await signer.getGasPrice()
+      // const gas_limit = ethers.utils.hexlify(21000)
+
       const value = ethers.utils.parseUnits(amountSent)
       const tx = {
         // from: send_address,
         to: to_address,
         value: value,
+        // nonce: nonce,
+        // gasLimit: gas_limit,
+        // gasPrice: gas_price,
       }
 
       await signer
@@ -237,6 +361,16 @@ const Popup = ({ setPopupOpen, popupOpen, userID }) => {
         aria-modal="true"
       >
         <div className="sm:block sm:p-0 flex min-h-screen items-center justify-center px-4 pt-4 pb-20 text-center">
+          {/* <!--
+      Background overlay, show/hide based on modal state.
+
+      Entering: "ease-out duration-300"
+        From: "opacity-0"
+        To: "opacity-100"
+      Leaving: "ease-in duration-200"
+        From: "opacity-100"
+        To: "opacity-0"
+    --> */}
           <div
             className="fixed inset-0 bg-black bg-opacity-60 transition-opacity"
             aria-hidden="true"
@@ -250,6 +384,16 @@ const Popup = ({ setPopupOpen, popupOpen, userID }) => {
             &#8203;
           </span>
 
+          {/* <!--
+      Modal panel, show/hide based on modal state.
+
+      Entering: "ease-out duration-300"
+        From: "opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+        To: "opacity-100 translate-y-0 sm:scale-100"
+      Leaving: "ease-in duration-200"
+        From: "opacity-100 translate-y-0 sm:scale-100"
+        To: "opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
+    --> */}
           <div
             ref={ref}
             className="popup sm:my-8 sm:align-middle relative inline-block w-[22rem] transform overflow-hidden rounded-lg bg-black text-left align-bottom shadow-xl transition-all"

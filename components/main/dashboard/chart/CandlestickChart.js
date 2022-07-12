@@ -93,6 +93,11 @@ const CandlestickChart = ({ chartData, startDate, endDate }) => {
       .attr("fill", "currentColor")
       .attr("text-anchor", "start")
       .text(yLabel));
+      
+    svg.call(d3.zoom()
+      .extent([[0, 0], [width, height]])
+      .scaleExtent([1, 8])
+      .on("zoom", zoomed));
 
     const g = svg.append("g")
     .attr("stroke", stroke)
@@ -114,6 +119,10 @@ const CandlestickChart = ({ chartData, startDate, endDate }) => {
 
     if (title)
       g.append("title").text(title);
+
+      function zoomed({transform}) {
+        g.attr("transform", transform);
+    }         
 
     return svg.node();
   }

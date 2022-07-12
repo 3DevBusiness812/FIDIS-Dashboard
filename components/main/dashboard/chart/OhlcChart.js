@@ -100,6 +100,11 @@ const CandlestickChart = ({ chartData, startDate, endDate }) => {
       .join("g")
       .attr("transform", i => `translate(${xScale(X[i])},0)`);
 
+      svg.call(d3.zoom()
+      .extent([[0, 0], [width, height]])
+      .scaleExtent([1, 8])
+      .on("zoom", zoomed));
+
       g.append("line")
       .attr("y1", i => yScale(Yl[i]))
       .attr("y2", i => yScale(Yh[i]));
@@ -112,6 +117,9 @@ const CandlestickChart = ({ chartData, startDate, endDate }) => {
   
       if (title)
         g.append("title").text(title);
+  function zoomed({transform}) {
+    g.attr("transform", transform);
+    } 
   
       return svg.node();
     }
